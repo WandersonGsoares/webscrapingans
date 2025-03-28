@@ -4,6 +4,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -136,13 +138,38 @@ public class WebScraperANS {
                     e.printStackTrace();
                 }
 
+                // Extrair texto do Anexo I
+                extrairTextoDoAnexoI(nomeArquivoAnexoI);
+
             } else {
                 System.out.println("Não foi possível compactar os arquivos pois os links não foram encontrados.");
             }
 
         } catch (IOException e) {
-            System.err.println("Ocorreu um erro ao conectar ao site: " + e.getMessage());
+            System.err.println("Ocorreu um erro: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public static void extrairTextoDoAnexoI(String caminhoArquivo) {
+        System.out.println("\nIniciando a extração de texto do Anexo I...");
+        File fileAnexoI = new File(caminhoArquivo);
+
+        if (fileAnexoI.exists()) {
+            try (PDDocument document = PDDocument.load(fileAnexoI)) {
+                PDFTextStripper pdfStripper = new PDFTextStripper();
+                String text = pdfStripper.getText(document);
+                System.out.println("Texto extraído do Anexo I:\n" + text);
+
+                // Próximo passo: identificar e extrair a tabela
+                System.out.println("\nPróximo passo: identificar e extrair a tabela 'Rol de Procedimentos e Eventos em Saúde'.");
+
+            } catch (IOException e) {
+                System.err.println("Erro ao ler o arquivo PDF do Anexo I: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Arquivo " + caminhoArquivo + " não encontrado. Certifique-se de que o Teste de Web Scraping foi executado com sucesso.");
         }
     }
 }
