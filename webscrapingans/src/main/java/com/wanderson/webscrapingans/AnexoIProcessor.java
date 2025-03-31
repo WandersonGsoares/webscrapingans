@@ -33,7 +33,7 @@ public class AnexoIProcessor {
         String urlAnexoI = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos/Anexo_I_Rol_2021RN_465.2021_RN627L.2024.pdf";
         String textoExtraido = AnexoIProcessor.extrairTextoDoAnexoI(urlAnexoI);
         String nomeArquivoCsv = "anexo_i.csv";
-        String nomeArquivoZip = "Teste_wanderson.zip"; // Nome do arquivo ZIP agora é "Teste_wanderson.zip"
+        String nomeArquivoZip = "Teste_wanderson.zip";
 
         if (textoExtraido != null) {
             String[] linhas = textoExtraido.split("\n");
@@ -79,8 +79,8 @@ public class AnexoIProcessor {
 
                                 for (String cobertura : coberturas) {
                                     if (restante.contains(cobertura)) {
-                                        if (cobertura.equals("OD")) od = "Sim";
-                                        else if (cobertura.equals("AMB")) amb = "Sim";
+                                        if (cobertura.equals("OD")) od = "Seg. Odontológica";
+                                        else if (cobertura.equals("AMB")) amb = "Seg. Ambulatorial";
                                         else if (cobertura.equals("HCO")) hco = "Sim";
                                         else if (cobertura.equals("HSO")) hso = "Sim";
                                         else if (cobertura.equals("REF")) ref = "Sim";
@@ -133,7 +133,6 @@ public class AnexoIProcessor {
                 } catch (IOException e) {
                     System.err.println("Erro ao criar o arquivo ZIP: " + e.getMessage());
                 } finally {
-                    // Opcional: Apagar o arquivo CSV temporário
                     File arquivoCsv = new File(nomeArquivoCsv);
                     if (arquivoCsv.exists()) {
                         arquivoCsv.delete();
